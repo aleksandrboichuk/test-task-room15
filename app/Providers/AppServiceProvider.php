@@ -30,9 +30,6 @@ class AppServiceProvider extends ServiceProvider
     {
         Paginator::useBootstrap();
 
-        $this->app->bind(LoginInterface::class, LoginService::class);
-        $this->app->bind(RegisterInterface::class, RegisterService::class);
         $this->app->bind(ApiAuthInterface::class, ApiAuthService::class);
-        $this->app->bind(VerifyEmailInterface::class, VerifyEmailService::class);
     }
 }

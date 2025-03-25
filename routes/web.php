@@ -5,9 +5,10 @@ use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\LogoutController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\Auth\ResetPasswordController;
-use App\Http\Controllers\Auth\VerifyEmailController;
+use App\Http\Controllers\Auth\VerificationController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\Resource\ProductController;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 
@@ -23,22 +24,18 @@ Route::middleware('guest')->group(function (){
     Route::post('register', [RegisterController::class, 'register']);
 });
 
-Route::middleware(['auth', 'verified'])->group(function (){
-    Route::get('home', [HomeController::class, 'index'])->name('home');
-    Route::post('logout', [LogoutController::class, 'logout']);
-    Route::resource('products', ProductController::class);
-});
+Route::post('logout', [LogoutController::class, 'logout'])
+    ->middleware('auth')
+    ->name('logout');
 
 Route::prefix('email')
-    ->controller(VerifyEmailController::class)
+    ->controller(VerificationController::class)
     ->middleware('auth')
     ->group(function() {
 
-    Route::get('/verify', 'verifyPage')->name('verification.notice');
-
-    Route::post('/verify/resend', 'resendVerification')->name('verification.resend');
-
-    Route::post('/verify/{id}/{hash}', 'verify')
+    Route::get('/verify', 'show')->name('verification.notice');
+    Route::post('/verify/resend', 'resend')->name('verification.resend');
+    Route::get('/verify/{id}/{hash}', 'verify')
         ->middleware('signed')
         ->name('verification.verify');
 });
@@ -55,4 +52,11 @@ Route::controller(ResetPasswordController::class)->group(function() {
     Route::post('/reset-password', 'reset')->name('password.update');
 });
 
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+Auth::routes();
+
+Route::middleware(['auth', 'verified'])->group(function (){
+    Route::get('home', [HomeController::class, 'index'])->name('home');
+    Route::resource('products', ProductController::class);
+    Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+});
+

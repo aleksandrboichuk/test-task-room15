@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Api\Resource;
 
 use App\Helpers\Response;
+use App\Http\Requests\Resource\ProductStoreRequest;
+use App\Http\Requests\Resource\ProductUpdateRequest;
 use App\Services\Resource\ProductResourceService;
 use Illuminate\Http\JsonResponse;
 
@@ -29,16 +31,20 @@ class ProductController
         return Response::success($item->toArray());
     }
 
-    public function store(array $data): JsonResponse
+    public function store(ProductStoreRequest $request): JsonResponse
     {
-        return Response::success($this->productResourceService->create($data)->toArray());
+        return Response::success($this->productResourceService->create($request->validated())->toArray());
     }
 
-    public function update(int $id, array $data): JsonResponse
+    public function update(int $id, ProductUpdateRequest $request): JsonResponse
     {
-        $result = $this->productResourceService->update($id, $data);
+        $product = $this->productResourceService->update($id, $request->validated());
 
-        return Response::success(compact('result'));
+        if(!$product){
+            return Response::notFound();
+        }
+
+        return Response::success($product->toArray());
     }
 
     public function destroy(int $id): JsonResponse

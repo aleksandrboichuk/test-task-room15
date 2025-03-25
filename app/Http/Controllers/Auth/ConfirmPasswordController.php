@@ -3,11 +3,10 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Foundation\Auth\ResetsPasswords;
+use Illuminate\Foundation\Auth\ConfirmsPasswords;
 
-class ResetPasswordController extends Controller
+class ConfirmPasswordController extends Controller
 {
-    use ResetsPasswords;
-
+    use ConfirmsPasswords;
     protected string $redirectTo = '/home';
 }

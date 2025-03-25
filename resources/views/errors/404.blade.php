@@ -1,10 +1,9 @@
-@extends('layouts.main')
+@extends('layouts.app')
 
 @section('title', "Dashboard")
 
 @section('content')
     <div id="wrapper">
-        @include('layouts.sidebar')
         <!-- Page Content -->
         <div id="page-content-wrapper">
             <div class="container-fluid">

@@ -11,9 +11,14 @@ abstract class BaseFormRequest extends FormRequest
 {
     abstract public function rules(): array;
 
+    public function authorize(): bool
+    {
+        return true;
+    }
+
     protected function failedValidation(Validator $validator)
     {
-        if($this->wantsJson()){
+        if($this->is('api/*')){
             $response = Response::validationError($validator->errors());
 
             throw new ValidationException($validator, $response);

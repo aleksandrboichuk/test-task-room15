@@ -5,12 +5,17 @@ namespace App\Services\Resource;
 use App\Interfaces\ResourceInterface;
 use App\Repositories\BaseRepository;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
-use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 
 class BaseResourceService implements ResourceInterface
 {
     protected BaseRepository $repository;
+
+    public function all(): Collection
+    {
+        return $this->repository->all();
+    }
 
     public function list(int $perPage = 10): LengthAwarePaginator
     {
@@ -27,7 +32,7 @@ class BaseResourceService implements ResourceInterface
         return $this->repository->create($data);
     }
 
-    public function update(int $id, array $data): bool|int|null
+    public function update(int $id, array $data): Model|false
     {
         return $this->repository->update($id, $data);
     }
@@ -35,6 +40,11 @@ class BaseResourceService implements ResourceInterface
     public function delete(int $id): bool|null
     {
         return $this->repository->delete($id);
+    }
+
+    public function latest(): Model|null
+    {
+        return $this->repository->latest();
     }
 
     public function setRepository(BaseRepository $repository): void

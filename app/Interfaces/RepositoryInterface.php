@@ -9,5 +9,5 @@ interface RepositoryInterface
 
     public function create(array $attributes):  Model;
 
-    public function update(int $id, array $attributes): bool;
+    public function update(int $id, array $attributes): Model|false;
 }

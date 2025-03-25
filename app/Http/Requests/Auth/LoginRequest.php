@@ -16,7 +16,7 @@ class LoginRequest extends BaseFormRequest
             ],
             'password' => [
                 'required',
-                "min:3"
+                'min:8'
             ],
         ];
     }

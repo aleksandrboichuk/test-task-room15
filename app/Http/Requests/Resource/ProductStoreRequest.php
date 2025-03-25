@@ -3,7 +3,6 @@
 namespace App\Http\Requests\Resource;
 
 use App\Http\Requests\BaseFormRequest;
-use Illuminate\Contracts\Validation\ValidationRule;
 
 class ProductStoreRequest extends BaseFormRequest
 {
@@ -14,7 +13,8 @@ class ProductStoreRequest extends BaseFormRequest
                 'required',
                 'string',
                 'min:3',
-                'max:75'
+                'max:75',
+                'unique:products,title',
             ],
             'price' => [
                 'required',

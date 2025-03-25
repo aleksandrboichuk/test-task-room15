@@ -3,7 +3,6 @@
 namespace App\Repositories;
 
 use App\Interfaces\RepositoryInterface;
-use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Pagination\LengthAwarePaginator;
@@ -40,7 +39,7 @@ abstract class BaseRepository implements RepositoryInterface
         return $item;
     }
 
-    public function update(int $id, array $attributes): bool
+    public function update(int $id, array $attributes): Model|false
     {
         $item = $this->find($id);
 
@@ -54,7 +53,7 @@ abstract class BaseRepository implements RepositoryInterface
             throw new \Exception("Update error ({$this->model->getTable()})");
         }
 
-        return true;
+        return $item;
     }
 
     public function delete(int $id): bool
@@ -65,5 +64,15 @@ abstract class BaseRepository implements RepositoryInterface
     public function list(int $perPage = 10): LengthAwarePaginator
     {
         return $this->model->query()->paginate($perPage);
+    }
+
+    public function all(): Collection
+    {
+        return $this->model->all();
+    }
+
+    public function latest(): Model|null
+    {
+        return $this->model->query()->latest()->first();
     }
 }
