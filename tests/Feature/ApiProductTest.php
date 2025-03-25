@@ -2,12 +2,8 @@
 
 namespace Tests\Feature;
 
-use App\Models\Currency;
-use App\Models\Product;
-use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
-use Tymon\JWTAuth\Facades\JWTAuth;
 
 class ApiProductTest extends TestCase
 {
@@ -34,14 +30,11 @@ class ApiProductTest extends TestCase
 
     public function test_unsuccessful_product_creation_validation_error()
     {
-        $user = User::factory()->create();
-        $token = JWTAuth::fromUser($user);
-
         $response = $this->postJson('/api/products', [
             'price' => 100,
             'currency_id' => $this->currencyId,
         ], [
-            'Authorization' => 'Bearer ' . $token,
+            'Authorization' => 'Bearer ' . $this->token,
         ]);
 
         $response->assertStatus(422)
