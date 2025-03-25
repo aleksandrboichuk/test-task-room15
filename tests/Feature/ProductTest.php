@@ -60,7 +60,7 @@ class ProductTest extends TestCase
             ->put(
                 route('products.update', [$this->productId]),
                 [
-                    'title' => fake()->word(),
+                    'title' => fake()->unique()->words(asText: true),
                     'price' => fake()->numberBetween(0, 1000),
                     'currency_id' => $this->currencyId,
                 ]
