@@ -2,8 +2,8 @@
 
 ### Розгортання проєкту:
 - Перейти у робочу директорію та виконати наступні команди в консолі:
-    + `git clone https://github.com/aleksandrboichuk/test-task.git` - клонування проєкту у робочу директорію
-    + `cd test-task`
+    + `git clone https://github.com/aleksandrboichuk/test-task-room15.git` - клонування проєкту у робочу директорію
+    + `cd test-task-room15`
     + `cp .env.example .env ` - копіювання конфігураційних файлів для laravel
     + `cd docker && cp docker-compose.example.yml docker-compose.yml && cp .env.example .env` - копіювання конфігураційних файлів для docker-compose
     + `docker-compose build && docker-compose up -d` - білд та підняття контейнерів
