@@ -2,14 +2,13 @@
 
 namespace App\Http\Controllers\Resource;
 
-use App\Http\Requests\Resource\ProductStoreRequest;
-use App\Http\Requests\Resource\ProductUpdateRequest;
+use App\Http\Requests\Resource\Product\ProductStoreRequest;
+use App\Http\Requests\Resource\Product\ProductUpdateRequest;
 use App\Services\Resource\CurrencyResourceService;
 use App\Services\Resource\ProductResourceService;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
 use Illuminate\Foundation\Application;
-use Illuminate\Http\RedirectResponse;
 
 class ProductController extends ResourceController
 {
@@ -18,7 +17,12 @@ class ProductController extends ResourceController
         protected CurrencyResourceService $currencyResourceService
     )
     {
-        parent::__construct($productResourceService, 'products');
+        parent::__construct(
+            service: $productResourceService,
+            entity: 'products',
+            storeRequestClassName: ProductStoreRequest::class,
+            updateRequestClassName: ProductUpdateRequest::class
+        );
     }
 
     public function create(): View|Application|Factory
@@ -48,37 +52,5 @@ class ProductController extends ResourceController
         $currencies = $this->currencyResourceService->all();
 
         return view("$this->entity.resource.edit", compact('item', 'currencies'));
-    }
-
-    public function store(ProductStoreRequest $request): RedirectResponse
-    {
-        try{
-
-            if($this->service->create($request->validated())){
-                return redirect()->route("$this->entity.index");
-            }
-
-        }catch (\Exception $exception){
-            dd($exception->getMessage());
-            // logging
-        }
-
-        return back()->withInput()->withErrors(['system' => "Something went wrong, try again later."]);
-    }
-
-    public function update(ProductUpdateRequest $request, string $id): RedirectResponse
-    {
-        try{
-
-            if($this->service->update($id, $request->validated())){
-                return redirect()->route('products.index');
-            }
-
-        }catch (\Exception $exception){
-            dd($exception->getMessage());
-            // logging
-        }
-
-        return back()->withInput()->withErrors(['system' => "Something went wrong, try again later."]);
     }
 }

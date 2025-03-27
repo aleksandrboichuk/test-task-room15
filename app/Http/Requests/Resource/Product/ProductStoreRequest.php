@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Requests\Resource;
+namespace App\Http\Requests\Resource\Product;
 
 use App\Http\Requests\BaseFormRequest;
 
-class ProductUpdateRequest extends BaseFormRequest
+class ProductStoreRequest extends BaseFormRequest
 {
     public function rules(): array
     {
@@ -14,7 +14,7 @@ class ProductUpdateRequest extends BaseFormRequest
                 'string',
                 'min:3',
                 'max:75',
-                'unique:products,title,' . $this->route('product'),
+                'unique:products,title',
             ],
             'price' => [
                 'required',

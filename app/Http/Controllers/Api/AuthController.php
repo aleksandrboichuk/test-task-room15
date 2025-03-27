@@ -32,14 +32,15 @@ class AuthController extends Controller
 
     public function logout(): JsonResponse
     {
-        JWTAuth::invalidate(JWTAuth::getToken());
+        $this->service->logout();
 
         return Response::success(['message' => 'Logged out successfully']);
     }
 
     public function refresh(): JsonResponse
     {
-        $accessToken = JWTAuth::refresh(JWTAuth::getToken());
+        $accessToken = $this->service->refresh();
+
         $expiresIn = config('jwt.ttl');
 
         return Response::success(compact('accessToken', 'expiresIn'));

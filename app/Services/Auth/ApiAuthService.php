@@ -20,4 +20,9 @@ class ApiAuthService implements ApiAuthInterface
     {
         return JWTAuth::refresh(JWTAuth::getToken());
     }
+
+    public function logout(): bool
+    {
+        return JWTAuth::invalidate(JWTAuth::getToken());
+    }
 }
